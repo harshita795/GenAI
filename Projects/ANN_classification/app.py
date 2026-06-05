@@ -4,20 +4,24 @@ import tensorflow as tf
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
 import pandas as pd
 import pickle
+import os
 
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Load the trained model
-model = tf.keras.models.load_model('model.h5')
-
+model = tf.keras.models.load_model(
+    os.path.join(BASE_DIR, "model.h5")
+)
 # Load the encoders and scaler
-with open("label_encoder_gender.pkl", "rb") as file:
-  label_encoder_gender = pickle.load(file)
+with open(os.path.join(BASE_DIR, "label_encoder_gender.pkl"), "rb") as file:
+    label_encoder_gender = pickle.load(file)
 
-with open("onehot_encoder_geo.pkl", "rb") as file:
-  onehot_encoder_geo = pickle.load(file)
+with open(os.path.join(BASE_DIR, "onehot_encoder_geo.pkl"), "rb") as file:
+    onehot_encoder_geo = pickle.load(file)
 
-with open("scaler.pkl", "rb") as file:
-  scaler = pickle.load(file)
+with open(os.path.join(BASE_DIR, "scaler.pkl"), "rb") as file:
+    scaler = pickle.load(file)
 
 # Streamlit app
 st.title("Customer churn Prediction")
@@ -70,8 +74,9 @@ input_data = pd.concat([input_data.reset_index(drop=True), geo_encoded_df], axis
 input_data_scaled = scaler.transform(input_data)
 
 # Predict churn
-prediction =  model.predict(input_data_scaled)
-prediction_probability = prediction[0][0]
+if st.button("Predict"):
+    prediction = model.predict(input_data_scaled)
+    prediction_probability = prediction[0][0]
 
 st.write(f"Churn Probability: {prediction_probability:.2f}")
 
