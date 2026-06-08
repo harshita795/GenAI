@@ -4,13 +4,21 @@ from tensorflow.keras.datasets import imdb
 from tensorflow.keras.preprocessing import sequence
 from tensorflow.keras.models import load_model
 import streamlit as st
+import os
 
 # Load the IMDB dataset word_index
 @st.cache_resource # Keeps the app fast by loading the data only once
+@st.cache_resource 
 def load_assets():
     word_index = imdb.get_word_index()
     reverse_word_index = {value: key for key, value in word_index.items()}
-    model = load_model("simple_rnn_imdb_model.h5")
+    
+    # 2. Dynamically look inside the current directory of main.py
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    model_path = os.path.join(current_dir, "simple_rnn_imdb_model.h5")
+    
+    # 3. Load using the absolute path
+    model = load_model(model_path)
     return reverse_word_index, word_index, model
 
 reverse_word_index, word_index, model = load_assets()
