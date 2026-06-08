@@ -15,7 +15,7 @@ def load_assets():
     
     # 2. Dynamically look inside the current directory of main.py
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(current_dir, "simple_rnn_imdb_model.h5")
+    model_path = os.path.join(current_dir, "Simple_rnn_imdb_model.h5")
     
     # 3. Load using the absolute path
     model = load_model(model_path)
