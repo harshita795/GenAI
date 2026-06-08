@@ -1,0 +1,5 @@
+tensorflow-cpu
+numpy
+streamlit
+pandas
+scikit-learn
